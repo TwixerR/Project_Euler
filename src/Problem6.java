@@ -14,7 +14,7 @@ public class Problem6 extends Solution {
     private final static int AMOUNT = 100;
 
     public static Object solve(){
-        BigInteger square_of_sums = BigInteger.ZERO;
+        BigInteger square_of_sums;
         int sum_of_squares = 0;
 
         int sum = 0;
@@ -27,6 +27,6 @@ public class Problem6 extends Solution {
         square_of_sums = new BigInteger(Integer.toString(sum)).multiply(new BigInteger(Integer.toString(sum)));
 
 
-        return new BigInteger(Integer.toString(sum_of_squares)).add(square_of_sums.negate());
+        return square_of_sums.add(new BigInteger(Integer.toString(sum_of_squares)).negate());
     }
 }
