@@ -21,10 +21,15 @@ public class DirectoryCrawler {
             }
 
         }
+        catch (NullPointerException npe){
+            System.out.println("Null pointer exception on: " + root);
+        }
         catch (Exception e){
             e.printStackTrace();
         }
 
         return vec.toString();
     }
+
+
 }

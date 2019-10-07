@@ -1,11 +1,13 @@
 import Utils.DirectoryCrawler;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.io.Console;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import static Utils.DirectoryCrawler.listFiles;
 
@@ -27,28 +29,38 @@ public class Euler {
                     exc.getMessage().substring(7) + " not found");
     }
     public static void main(String[] args){
-        //print out all solutions
+        //request exercise number and invoke matching class
+        Scanner keyboard = new Scanner(System.in);
         try {
             String[]  filesArr = DirectoryCrawler.listFiles(CURRENT_WORKING_DIRECTORY_URL).split(",");
+            //beautify file name list array
+            //format after following block is "Problem123"
             for (String str : filesArr) {
-                //get rid of leading and trailing spaces, strip off trailing '.java'
+                //get rid of leading and trailing spaces
                 str = str.trim();
                 //strip off trailing '.java'
                 str = str.substring(0, str.length()-5);
+
                 //invoke Problem### class' static method, if it exists in directory
-                if(str.matches("Problem\\d+")){
-                    Class <?> clazz = Class.forName(str);
-                    Method method = clazz.getMethod("solve");
-                    Object o = method.invoke(null);
-                    System.out.println("Solution to " + clazz.getCanonicalName() + ":\n" + o.toString() + "\n");
-                }
+//                if(str.matches("Problem\\d+")){
+//                    Class <?> clazz = Class.forName(str);
+//                    Method method = clazz.getMethod("solve");
+//                    Object o = method.invoke(null);
+//                    System.out.println("Solution to " + clazz.getCanonicalName() + ":\n" + o.toString() + "\n");
+//                }
             }
+            System.out.println("please specify exercise number to invoke, or type 0 to exit");
+            int exerciseNumber = keyboard.nextInt();
+            Class<?> clazz = Class.forName("Problem" + exerciseNumber);
+            Method method = clazz.getMethod("solve");
+            Object o = method.invoke(null);
+            System.out.println("Solution to " + clazz.getCanonicalName() + ":\n" + o.toString() + "\n");
         }
         catch (ClassNotFoundException cnfe){
             defaultExceptionHandler(cnfe);
         }
         catch (NoSuchMethodException nsme){
-            System.out.println("No such method exception. Probbly  tyo in Problem###.class file on method solve()");
+            System.out.println("No such method exception. Probably  typo in Problem###.class file on method solve()");
             defaultExceptionHandler(nsme);
         }
         catch (IllegalAccessException iae){
