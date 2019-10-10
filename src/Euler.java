@@ -50,11 +50,22 @@ public class Euler {
 //                }
             }
             System.out.println("please specify exercise number to invoke, or type 0 to exit");
-            int exerciseNumber = keyboard.nextInt();
-            Class<?> clazz = Class.forName("Problem" + exerciseNumber);
-            Method method = clazz.getMethod("solve");
-            Object o = method.invoke(null);
-            System.out.println("Solution to " + clazz.getCanonicalName() + ":\n" + o.toString() + "\n");
+            System.out.print("Problem ");
+            int exerciseNumber;
+            while(true){
+                exerciseNumber = keyboard.nextInt();
+                if (exerciseNumber == 0)
+                    break;
+
+                    Class<?> clazz = Class.forName("Problem" + exerciseNumber);
+                    Method method = clazz.getMethod("solve");
+                    Object o = method.invoke(null);
+                    String name =  clazz.getCanonicalName();
+                    System.out.println("Solution to " +
+                            name.substring(0,name.length()-1) + " " +
+                            name.substring(name.length()-1) + ":\n" +
+                            o.toString() + "\n");
+            }
         }
         catch (ClassNotFoundException cnfe){
             defaultExceptionHandler(cnfe);
@@ -68,6 +79,11 @@ public class Euler {
         }
         catch (InvocationTargetException ite) {
             defaultExceptionHandler(ite);
+        }
+        catch (NullPointerException npe) {
+            System.out.println("Null pointer exception ");
+            System.out.println(npe.getMessage());
+            System.out.println(npe.getStackTrace());
         }
     }
 }
